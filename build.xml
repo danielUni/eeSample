@@ -1,0 +1,189 @@
+<project name="eeSample" default="" basedir=".">
+	
+	<!-- Property File -->
+    <property file="ant.properties"/>
+	
+	<!-- Global properties -->
+	<property name="app.name" value="eeSample"/>
+	<property name="ejbFile" value="${app.name}EJB.jar"/>
+	<property name="earFile" value="${app.name}.ear"/>
+	
+	<property name="srcdir" value="src"/>
+	<property name="srcdir.web" value="WebContent"/>
+	<property name="srcdir.ejb" value="src/ejb/eeSample/jar"/>
+	<property name="srcdir.ejb.web" value="src/ejb/eeSample/war"/>
+	
+	<property name="dstdir" value="bin/ejb"/>
+	<property name="dstdir.ejb" value="bin/ejb/jar"/>
+	<property name="dstdir.ejb.war" value="bin/ejb/war"/>
+	
+	
+	<property name="dstdir.web.classes" value="WebContent/WEB-INF/classes"/>
+	
+	
+	<property name="distdir" value="dist"/>
+	<property name="distdir.ejb" value="dist/ejb"/>
+	<property name="distdir.war" value="dist/war"/>
+	<property name="distdir.ear" value="dist/ear"/>
+	
+
+
+	<property name="impdir" value="lib"/>
+	<property name="impdir.compile" value="lib/compile"/>
+	<property name="resdir" value="res"/>
+	<property name="resdir.ejb" value="res/ejb"/>
+	<property name="resdir.ear" value="res/ear"/>
+	
+	
+	<!-- Clean Directory -->
+	<target name="clean">
+			<delete failonerror="false" verbose="true" includeEmptyDirs="true" dir="${dstdir}"/>
+			<delete failonerror="false" verbose="true" includeemptydirs="true" dir="${dstdir.ejb}"/>
+			<delete failonerror="false" verbose="true" includeemptydirs="true" dir="${distdir}"/>
+		    <delete failonerror="false" verbose="true" includeEmptyDirs="true" dir="${distdir.ejb}"/>
+		    <delete failonerror="false" verbose="true" includeemptydirs="true" dir="${distdir.war}"/>
+		    <delete failonerror="false" verbose="true" includeemptydirs="true" dir="${distdir.ear}"/>
+	</target>	
+	
+	<!-- Init Build -->
+	<target name="init">
+			<mkdir dir="${dstdir}"/>
+		    <mkdir dir="${distdir}"/>
+		    <mkdir dir="${distdir.ejb}"/>
+		    <mkdir dir="${distdir.war}"/>
+		    <mkdir dir="${distdir.ear}"/>
+	</target>	
+	
+	<!-- Compile EJB SOURCES -->
+	<target name="compileEJB">
+		<javac srcdir="${srcdir.ejb}" destdir="${dstdir.ejb}/" deprecation="Off" debug="on" includeantruntime="false">
+			<include name="**/*.java"/>
+			<classpath>
+				<fileset dir="${impdir.compile}">
+					<include name="**/*.jar"/>
+					<include name="**/*.zip"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<!-- Build EJB Jar -->
+	<target  name="createEJBjar">
+		<jar destfile="${distdir.ejb}/${ejbFile}" basedir="${dstdir.ejb}/">
+		</jar>
+	</target>
+	
+	<!-- Compile WEB SOURCES -->
+	<target name="compileWeb">
+		<javac srcdir="${srcdir.ejb.web}" destdir="${dstdir.web.classes}/" deprecation="Off" debug="on" includeantruntime="false">
+		<classpath>
+				<fileset dir="${impdir.compile}">
+					<include name="**/*.jar"/>
+					<include name="**/*.zip"/>
+				</fileset>
+			    <fileset dir="${distdir.ejb}/">
+					<include name="**/*.jar"/>
+					<include name="**/*.zip"/>
+				</fileset>
+			</classpath>
+		</javac>	
+</target>
+	
+	<!--Build WAR -->
+	<target name="build-war">
+	   <war destfile="${distdir.war}/${app.name}.war" webxml="${srcdir.web}/WEB-INF/web.xml">
+	   		<fileset dir="${srcdir.web}">
+	      		<include name="**/*.*"/>
+	   		</fileset>
+	   </war>
+	</target>
+	
+	<!-- Build EAR -->
+	<target name="createEar" >
+		<ear destfile="${distdir.ear}/${earFile}" appxml="${resdir.ear}/application.xml">
+			<fileset dir="${distdir.ejb}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${distdir.war}">
+				<include name="**/*.war"/>
+			</fileset>
+			<fileset dir="${resdir.ear}">
+				<include name="lib/**/*"/>
+		    </fileset>
+	   </ear>
+    </target>
+	
+	<!-- Server Targets -->
+	<presetdef name="asadmin">
+			<java jar="${javaee.home}/modules/admin-cli.jar" fork="true" jvm="${java.home}/bin/java" >
+				<arg line="--port ${javaee.adminserver.port} --user admin --passwordfile passfile" />
+			</java>
+	</presetdef>
+		
+	<target name="start-glassfish">
+			<asadmin failonerror="true">
+				<arg value="start-domain" />
+			</asadmin>
+        	<waitfor>
+            	<http url="http://${javaee.server.name}:${javaee.server.port}"/>
+        	</waitfor>
+	</target>
+	
+    <target name="stop-glassfish">
+        <asadmin failonerror="true">
+            <arg line="stop-domain"/>
+        </asadmin>
+    </target>
+	
+    <target name="restart-glassfish" depends="stop-glassfish, start-glassfish" />
+	
+	<target name="deploy">
+		<asadmin failonerror="true">
+			<arg value="deploy" />
+			<arg value="--force=true" />
+			<arg value="${distdir.ear}/${earFile}"/>
+		</asadmin>
+	</target>
+	
+	<target name="undeploy">
+		<asadmin failonerror="false">
+			<arg value="undeploy" />
+			<arg value="${app.name}" />
+		</asadmin>
+	</target>
+	
+	<!-- JDBC Targets -->
+    <target name="create-jdbc-connection-pool">
+        <asadmin failonerror="true">
+            <arg line=" create-jdbc-connection-pool"/>
+            <arg line=" --datasourceclassname ${db.datasource}" />
+            <arg line=" --restype javax.sql.XADataSource " />
+            <arg line=" --property portNumber=${db.port}:serverName=${db.server.name}:User=${db.user}:Password=${db.password}:databaseName=${db.name}" />
+            <arg line=" ${jdbc.connectionpool.name} " />
+        </asadmin> 
+    </target>
+        	
+    <target name="create-jdbc-resource">
+        <asadmin failonerror="false">
+            <arg line="create-jdbc-resource"/>
+            <arg line=" --connectionpoolid ${jdbc.connectionpool.name}" />
+            <arg line=" --enabled=true" />
+            <arg line=" ${jdbc.resource.name}" />
+        </asadmin>     
+    </target>
+	
+    <target name="delete-jdbc-connection-pool">
+        <asadmin failonerror="false">
+            <arg line="delete-jdbc-connection-pool"/>
+            <arg line=" ${jdbc.connectionpool.name}" />
+        </asadmin>
+    </target>
+	
+    <target name="delete-jdbc-resource">
+        <asadmin failonerror="false">
+            <arg line="delete-jdbc-resource"/>
+            <arg line=" ${jdbc.resource.name}" />
+        </asadmin>
+    </target>
+	
+</project>
