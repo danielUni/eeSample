@@ -72,6 +72,9 @@
 	<!-- Build EJB Jar -->
 	<target  name="createEJBjar">
 		<jar destfile="${distdir.ejb}/${ejbFile}" basedir="${dstdir.ejb}/">
+			<metainf dir="${resdir.ejb}">
+							<include name="persistence.xml" />
+			</metainf>
 		</jar>
 	</target>
 	

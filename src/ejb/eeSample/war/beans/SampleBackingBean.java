@@ -1,13 +1,19 @@
 package ejb.eeSample.war.beans;
 
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+
+import ejb.eeSample.jar.beans.SampleEJB;
+import ejb.eeSample.jar.entities.Visitor;
 
 @ManagedBean
 @SessionScoped
 @Named
-public class SampleBackingBean {
+public class SampleBackingBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,9 +23,9 @@ public class SampleBackingBean {
 
 	}
 
-	// @Inject
-	// private SampleEJB userEJB;
-	// private User user = new User();
+	@Inject
+	private SampleEJB userEJB;
+	private Visitor user = new Visitor();
 
 	public String getName() {
 		return name;
@@ -31,7 +37,7 @@ public class SampleBackingBean {
 
 	public String createNewUser() {
 
-		// userEJB.createUser(user);
+		userEJB.createUser(user);
 		//
 		// FacesContext.getCurrentInstance()
 		// .addMessage(

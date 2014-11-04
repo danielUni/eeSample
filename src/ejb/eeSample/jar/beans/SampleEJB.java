@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import ejb.eeSample.jar.entities.User;
+import ejb.eeSample.jar.entities.Visitor;
 
 @Stateless
 @Named
@@ -21,7 +21,7 @@ public class SampleEJB {
 
 	}
 
-	public User createUser(User user) {
+	public Visitor createUser(Visitor user) {
 		em.persist(user);
 		return user;
 	}

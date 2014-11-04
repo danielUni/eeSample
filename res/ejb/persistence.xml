@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="MyFriends">
+	<persistence-unit name="eeSample">
 		<jta-data-source>jdbc/eeSample</jta-data-source>
-		<class>ejb.eeSample.jar.entities.User</class>
+				<properties>
+			<property name="toplink.ddl-generation" value="drop-and-create-tables"/>
+			<property name="toplink.create-ddl-jdbc-file-name" value="create_eeSample.jdbc"/>
+			<property name="toplink.drop-ddl-jdbc-file-name" value="drop_eeSample.jdbc"/>
+		</properties>
 	</persistence-unit>
 </persistence>
