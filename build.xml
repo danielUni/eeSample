@@ -52,6 +52,8 @@
 		    <mkdir dir="${distdir.ejb}"/>
 		    <mkdir dir="${distdir.war}"/>
 		    <mkdir dir="${distdir.ear}"/>
+		    <mkdir dir="${dstdir.ejb}"/>
+		    <mkdir dir="${dstdir.ejb.war}"/>
 	</target>	
 	
 	<!-- Compile EJB SOURCES -->
