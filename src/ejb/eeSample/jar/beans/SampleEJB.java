@@ -15,6 +15,8 @@ public class SampleEJB {
 	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
 	EntityManager em;
 
+	// TEST
+
 	public SampleEJB() {
 
 	}
