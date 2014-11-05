@@ -21,6 +21,8 @@ public class VisitorEJB {
 
 	}
 
+	// TEST dasfa<sdfasfadsfadsfafsdfa
+
 	public Visitor createUser(Visitor user) {
 		em.persist(user);
 		return user;
