@@ -3,8 +3,6 @@ package ejb.eeSample.war.beans;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -36,18 +34,19 @@ public class VisitorBackingBean implements Serializable {
 		this.name = name;
 	}
 
-	public String welcomeVisitor() {
+	public void welcomeVisitor() {
 
 		visitorEJB.createUser(visitor);
 
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "USER created",
-						"The User " + visitor.getName()
-								+ " has been created with id= "
-								+ visitor.getId()));
+		// TODO: Check why this statement doesn't work properly
+		// FacesContext.getCurrentInstance().addMessage(
+		// null,
+		// new FacesMessage(FacesMessage.SEVERITY_INFO, "USER created",
+		// "The User " + visitor.getName()
+		// + " has been created with id= "
+		// + visitor.getId()));
 
-		return "welcome.xhtml";
+		// return "welcome.xhtml";
 	}
 
 	public VisitorEJB getUserEJB() {

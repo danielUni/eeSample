@@ -74,6 +74,7 @@
 		<jar destfile="${distdir.ejb}/${ejbFile}" basedir="${dstdir.ejb}/">
 			<metainf dir="${resdir.ejb}">
 							<include name="persistence.xml" />
+							<include name="orm.xml" />
 			</metainf>
 		</jar>
 	</target>

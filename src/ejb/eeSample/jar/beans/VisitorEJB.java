@@ -1,5 +1,7 @@
 package ejb.eeSample.jar.beans;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -22,6 +24,12 @@ public class VisitorEJB {
 	public Visitor createUser(Visitor user) {
 		em.persist(user);
 		return user;
+	}
+
+	public List<Visitor> getVisitors() {
+		List<Visitor> visitors = em.createNamedQuery("findAllVisitors")
+				.getResultList();
+		return visitors;
 	}
 
 }
