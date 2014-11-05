@@ -10,14 +10,12 @@ import ejb.eeSample.jar.entities.Visitor;
 
 @Stateless
 @Named
-public class SampleEJB {
+public class VisitorEJB {
 
 	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
 	EntityManager em;
 
-	// TEST
-
-	public SampleEJB() {
+	public VisitorEJB() {
 
 	}
 
