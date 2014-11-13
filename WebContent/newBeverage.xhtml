@@ -21,9 +21,9 @@
 					<h:outputLabel value="Quantity: "/>
 					<h:inputText value="#{backendBackingBean.beverage.quantity}"/>
 					<h:outputLabel value="Manufacturer: "/>
-					<h:selectOneMenu value="#{backendBackingBean.manufacturerName}">
+					<!--  <h:selectOneMenu value="#{backendBackingBean.manufacturerName}">
     					<f:selectItems value="#{backendBackingBean.manufactures}" />
-					</h:selectOneMenu>
+					</h:selectOneMenu>-->
 				</h:panelGrid>
 				<br/>
 				<h:commandButton value="Add Beverage" action="#{backendBackingBean.addBeverage}">

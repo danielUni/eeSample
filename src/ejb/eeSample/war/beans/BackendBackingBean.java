@@ -31,6 +31,7 @@ public class BackendBackingBean implements Serializable {
 
 	// business objects
 	private BeverageEntity beverage = new BeverageEntity();
+	private List<BeverageEntity> beverages;
 	private ManufacturerEntity manufacturer = new ManufacturerEntity();
 	// TODO: Check if it's possible to avoid this overhead
 	private GiftIncentiveEntity giftIncentive = new GiftIncentiveEntity();
@@ -44,13 +45,17 @@ public class BackendBackingBean implements Serializable {
 	private String manufacturerName;
 	private List<ManufacturerEntity> manufactures;
 
+	// beverage properties
+
 	// initBean
 	@PostConstruct
 	public void init() {
 		this.manufactures = backendEJB.getManufactures();
+		this.beverages = backendEJB.queryBeverages();
 	}
 
 	// navigation logic
+	// TODO: Second Model?
 	public String showBeverageForm() {
 		return "newBeverage.xhtml";
 	}
@@ -63,7 +68,16 @@ public class BackendBackingBean implements Serializable {
 		return "newIncentive.xhtml";
 	}
 
+	public String showDashboard() {
+		return "welcome.xhtml";
+	}
+
+	public String showBeverageOverwiew() {
+		return "beverageOverview.xhtml";
+	}
+
 	// business logic
+	// TODO:NOT POSSIBLE TO ADD BEVERAGE WITHOUT INCENTIVE
 	public void addBeverage() {
 		backendEJB.addBeverage(beverage);
 	}
@@ -79,6 +93,7 @@ public class BackendBackingBean implements Serializable {
 	}
 
 	// Getter and Setter
+	// TODO: Provide reasonable setter
 	public void addManufacturer() {
 		backendEJB.addManufacturer(manufacturer);
 	}
@@ -169,4 +184,11 @@ public class BackendBackingBean implements Serializable {
 		return serialVersionUID;
 	}
 
+	public List<BeverageEntity> getBeverages() {
+		return beverages;
+	}
+
+	public void setBeverages(List<BeverageEntity> beverages) {
+		this.beverages = beverages;
+	}
 }

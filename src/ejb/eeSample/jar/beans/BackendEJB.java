@@ -42,4 +42,9 @@ public class BackendEJB {
 	public List<ManufacturerEntity> getManufactures() {
 		return em.createNamedQuery("getManufacturers").getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<BeverageEntity> queryBeverages() {
+		return em.createNamedQuery("getBeverages").getResultList();
+	}
 }
