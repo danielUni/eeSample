@@ -1,19 +1,48 @@
 -- Table: visitor
 
-DROP TABLE visitor;
+DROP TABLE Beverage;
+DROP TABLE incentive;
+DROP TABLE manufacturer;
 
-CREATE TABLE visitor
+CREATE TABLE beverage
 (
   id integer NOT NULL,
   version integer,
   name varchar(147),
-  age integer,
-  location varchar(4711),
-  CONSTRAINT visitor_pkey PRIMARY KEY (id)
+  manufacture_id integer,
+  incentive_id integer,
+  price integer,
+  quantity integer,
+  location varchar(4711)
 )
 WITH (
   OIDS=FALSE
 );
+
+CREATE TABLE incentive
+(
+  id integer NOT NULL,
+  version integer,
+  name varchar(147),
+  dtype varchar(147)
+)
+WITH (
+  OIDS=FALSE
+);
+
+CREATE TABLE manufacturer
+(
+  id integer NOT NULL,
+  version integer,
+  name varchar(147),
+  dtype varchar(147)
+)
+WITH (
+  OIDS=FALSE
+);
+
+
+
 ALTER TABLE visitor
   OWNER TO tester;
   

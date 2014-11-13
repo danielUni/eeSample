@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"	
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+	<ui:composition template="/WEB-INF/layout.xhtml">
+	
+		<ui:define name="title">Enter new Beverage</ui:define>
+	
+		<ui:define name="content">
+			<h:form id="beverageForm">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Name: "/>
+					<h:inputText value="#{backendBackingBean.beverage.name}"/>
+					<h:outputLabel value="Price: "/>
+					<h:inputText value="#{backendBackingBean.beverage.price}"/>
+					<h:outputLabel value="Quantity: "/>
+					<h:inputText value="#{backendBackingBean.beverage.quantity}"/>
+					<h:outputLabel value="Manufacturer: "/>
+					<h:selectOneMenu value="#{backendBackingBean.manufacturerName}">
+    					<f:selectItems value="#{backendBackingBean.manufactures}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<br/>
+				<h:commandButton value="Add Beverage" action="#{backendBackingBean.addBeverage}">
+				</h:commandButton>
+			</h:form>
+			<hr/>
+		</ui:define>
+	</ui:composition>	
+</html>
